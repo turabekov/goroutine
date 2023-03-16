@@ -10,6 +10,10 @@ import (
 	"github.com/google/uuid"
 )
 
+var users = []User{}
+var products = []Product{}
+var shopCarts = []ShopCart{}
+
 type User struct {
 	Id    string
 	Name  string
@@ -31,12 +35,29 @@ type ShopCart struct {
 
 func Kassir1(idx int, shopcart *ShopCart, empty chan struct{}) {
 	shopcart.IsFinished = true
+	total := 0
 
+	for _, pr := range products {
+		if pr.Id == shopcart.Product_id {
+			total += pr.Price * shopcart.Amount
+		}
+	}
+
+	fmt.Printf("%d. Total price: %d \n", idx, total)
 	time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)+500))
 	empty <- struct{}{}
 }
 func Kassir2(idx int, shopcart *ShopCart, empty chan struct{}) {
 	shopcart.IsFinished = true
+	total := 0
+
+	for _, pr := range products {
+		if pr.Id == shopcart.Product_id {
+			total += pr.Price * shopcart.Amount
+		}
+	}
+
+	fmt.Printf("%d. Total price: %d \n", idx, total)
 
 	time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)+500))
 	empty <- struct{}{}
@@ -44,14 +65,21 @@ func Kassir2(idx int, shopcart *ShopCart, empty chan struct{}) {
 func Kassir3(idx int, shopcart *ShopCart, empty chan struct{}) {
 	shopcart.IsFinished = true
 
+	total := 0
+
+	for _, pr := range products {
+		if pr.Id == shopcart.Product_id {
+			total += pr.Price * shopcart.Amount
+		}
+	}
+
+	fmt.Printf("%d. Total price: %d \n", idx, total)
+
 	time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)+500))
 	empty <- struct{}{}
 }
 
 func main() {
-	users := []User{}
-	products := []Product{}
-	shopCarts := []ShopCart{}
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -89,9 +117,19 @@ func main() {
 
 	start := time.Now().UnixNano() / int64(time.Millisecond)
 	// start
-	for idx, _ := range shopCarts {
+	idx := 0
+	for idx < len(shopCarts) {
 		go Kassir1(idx, &shopCarts[idx], empty)
+		if idx+1 < len(shopCarts) {
+			go Kassir2(idx+1, &shopCarts[idx+1], empty)
+		}
+		if idx+2 < len(shopCarts) {
+			go Kassir3(idx+2, &shopCarts[idx+2], empty)
+		}
+		idx += 3
 	}
+	<-empty
+	<-empty
 	<-empty
 	// end
 	end := time.Now().UnixNano() / int64(time.Millisecond)
@@ -100,6 +138,6 @@ func main() {
 
 	// fmt.Scanln()
 
-	fmt.Println(shopCarts)
+	// fmt.Println(shopCarts)
 
 }
