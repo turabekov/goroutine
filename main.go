@@ -35,11 +35,17 @@ func Kassir1(idx int, shopcart *ShopCart, empty chan struct{}) {
 	time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)+500))
 	empty <- struct{}{}
 }
-func Kassir2(idx int, shopcart ShopCart, empty chan struct{}) {
+func Kassir2(idx int, shopcart *ShopCart, empty chan struct{}) {
 	shopcart.IsFinished = true
+
+	time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)+500))
+	empty <- struct{}{}
 }
-func Kassir3(idx int, shopcart ShopCart, empty chan struct{}) {
+func Kassir3(idx int, shopcart *ShopCart, empty chan struct{}) {
 	shopcart.IsFinished = true
+
+	time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)+500))
+	empty <- struct{}{}
 }
 
 func main() {
