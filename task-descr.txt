@@ -1,0 +1,37 @@
+// Korzinka
+
+cassir1
+cassir2
+cassir3
+
+// 100
+user
+  [
+    a: 10
+    b: 10
+    c: 10
+  ]
+
+user
+  [
+    a: 10
+    b: 10
+    c: 10
+  ]
+
+user
+  [
+    a: 10
+    b: 10
+    c: 10
+  ]
+
+user
+  [
+    a: 10
+    b: 10
+    c: 10
+  ]
+
+
+Time: 20S
